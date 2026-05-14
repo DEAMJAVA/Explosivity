@@ -3,13 +3,13 @@
 	"id": "explosivity",
 	"version": "${version}",
 	"name": "Explosivity",
-	"description": "This is an example description! Tell everyone what your mod is about!",
+	"description": "Modify Explostion Damage",
 	"authors": [
 		"DEAMJAVA"
 	],
 	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"homepage": "https://github.com/DEAMJAVA/Explosivity/",
+		"sources": "https://github.com/DEAMJAVA/Explosivity"
 	},
 	"license": "GPLv3",
 	"icon": "assets/explosivity/icon.png",
