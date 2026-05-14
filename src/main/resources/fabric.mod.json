@@ -1,0 +1,35 @@
+{
+	"schemaVersion": 1,
+	"id": "explosivity",
+	"version": "${version}",
+	"name": "Explosivity",
+	"description": "This is an example description! Tell everyone what your mod is about!",
+	"authors": [
+		"DEAMJAVA"
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/FabricMC/fabric-example-mod"
+	},
+	"license": "GPLv3",
+	"icon": "assets/explosivity/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			{
+				"value": "net.deamjava.explosivity.Explosivity",
+				"adapter": "kotlin"
+			}
+		]
+	},
+	"mixins": [
+		"explosivity.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.19.2",
+		"minecraft": "~1.21.11",
+		"java": ">=21",
+		"fabric-api": "*",
+		"fabric-language-kotlin": "*"
+	}
+}

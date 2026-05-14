@@ -1,0 +1,17 @@
+{
+	"required": true,
+	"package": "net.deamjava.explosivity.mixin",
+	"compatibilityLevel": "JAVA_21",
+	"mixins": [
+		"BedBlockMixin",
+		"RespawnAnchorBlockMixin",
+		"ServerExplosionAccessor",
+		"ServerExplosionMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	},
+	"overwrites": {
+		"requireAnnotations": true
+	}
+}
