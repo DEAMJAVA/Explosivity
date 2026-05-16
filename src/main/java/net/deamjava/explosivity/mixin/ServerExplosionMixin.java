@@ -1,4 +1,4 @@
-// Updated ServerExplosionMixin.java
+// ServerExplosionMixin.java
 package net.deamjava.explosivity.mixin;
 
 import net.deamjava.explosivity.ExplosivityDebug;
@@ -19,17 +19,14 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(ServerExplosion.class)
 public class ServerExplosionMixin implements IExplosivityTagged {
 
     @Unique
     private ExplosionSource explosivity$explosionSource = ExplosionSource.UNKNOWN;
-
-    @Unique
-    private boolean explosivity$radiusScaled = false;
 
     @Override
     public ExplosionSource explosivity$getSource() {
@@ -66,22 +63,22 @@ public class ServerExplosionMixin implements IExplosivityTagged {
         }
     }
 
-    @Inject(method = "explode", at = @At("HEAD"))
-    private void explosivity$applyBlockRadiusScale(CallbackInfoReturnable<Integer> cir) {
-        if (this.explosivity$radiusScaled) return;
-        this.explosivity$radiusScaled = true;
-
-        ServerExplosionAccessor self = (ServerExplosionAccessor) (Object) this;
-        float originalRadius = self.explosivity$getRadius();
+    @ModifyVariable(
+            method = "calculateExplodedPositions",
+            at = @At("STORE"),
+            name = "remainingPower",
+            ordinal = 0
+    )
+    private float explosivity$scaleBlockPower(float remainingPower) {
         float multiplier = this.explosivity$explosionSource.getBlockDamageMultiplier(
                 ((ServerExplosion) (Object) this).level()
         );
-        float newRadius = originalRadius * multiplier;
-        ExplosivityDebug.log("applyBlockRadiusScale: source=" + this.explosivity$explosionSource
-                + " originalRadius=" + originalRadius
+        float scaled = remainingPower * multiplier;
+        ExplosivityDebug.log("scaleBlockPower: source=" + this.explosivity$explosionSource
+                + " original=" + remainingPower
                 + " multiplier=" + multiplier
-                + " newRadius=" + newRadius);
-        self.explosivity$setRadius(newRadius);
+                + " scaled=" + scaled);
+        return scaled;
     }
 
     @ModifyArg(

@@ -22,11 +22,11 @@ object FloatGameRuleHelper {
         id,
         GameRule(
             category,
-            GameRuleType.INT,                        // no FLOAT variant exists; INT is the safe fallback
+            GameRuleType.INT,
             FloatArgumentType.floatArg(min, max),
-            { visitor, rule -> },                    // no visitFloat in GameRuleTypeVisitor; no-op
+            { visitor, rule -> },
             Codec.floatRange(min, max),
-            { f -> (f * 100).toInt() },              // commandResultFunction BEFORE defaultValue
+            { f -> (f * 100).toInt() },
             default,
             FeatureFlagSet.of()
         )

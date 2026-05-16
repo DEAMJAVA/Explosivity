@@ -21,7 +21,6 @@ public class BedBlockMixin {
             method = "useWithoutItem",
             at = @At(
                     value = "INVOKE",
-                    // Vec3 overload: explode(Entity, DamageSource, ExplosionDamageCalculator, Vec3, float, boolean, ExplosionInteraction)V
                     target = "Lnet/minecraft/world/level/Level;explode(Lnet/minecraft/world/entity/Entity;Lnet/minecraft/world/damagesource/DamageSource;Lnet/minecraft/world/level/ExplosionDamageCalculator;Lnet/minecraft/world/phys/Vec3;FZLnet/minecraft/world/level/Level$ExplosionInteraction;)V"
             )
     )
