@@ -16,10 +16,7 @@ import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyArg;
-import org.spongepowered.asm.mixin.injection.ModifyVariable;
+import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ServerExplosion.class)
@@ -66,15 +63,23 @@ public class ServerExplosionMixin implements IExplosivityTagged {
     @ModifyVariable(
             method = "calculateExplodedPositions",
             at = @At("STORE"),
-            name = "remainingPower",
-            ordinal = 0
+            slice = @Slice(
+                    from = @At(
+                            value = "INVOKE",
+                            target = "Lnet/minecraft/util/RandomSource;nextFloat()F"
+                    ),
+                    to = @At(
+                            value = "INVOKE",
+                            target = "Lnet/minecraft/world/level/ExplosionDamageCalculator;getBlockExplosionResistance(Lnet/minecraft/world/level/Explosion;Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/material/FluidState;)Ljava/util/Optional;"
+                    )
+            )
     )
     private float explosivity$scaleBlockPower(float remainingPower) {
         float multiplier = this.explosivity$explosionSource.getBlockDamageMultiplier(
                 ((ServerExplosion) (Object) this).level()
         );
         float scaled = remainingPower * multiplier;
-        ExplosivityDebug.log("scaleBlockPower: source=" + this.explosivity$explosionSource
+        ExplosivityDebug.log("scaleBlockPower(once/ray): source=" + this.explosivity$explosionSource
                 + " original=" + remainingPower
                 + " multiplier=" + multiplier
                 + " scaled=" + scaled);
