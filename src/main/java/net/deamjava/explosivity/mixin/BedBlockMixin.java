@@ -8,7 +8,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BedBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.BlockHitResult;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -18,7 +17,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class BedBlockMixin {
 
     @Inject(
-            method = "useWithoutItem",
+            method = "destroyOnUse",
             at = @At(
                     value = "INVOKE",
                     target = "Lnet/minecraft/world/level/Level;explode(Lnet/minecraft/world/entity/Entity;Lnet/minecraft/world/damagesource/DamageSource;Lnet/minecraft/world/level/ExplosionDamageCalculator;Lnet/minecraft/world/phys/Vec3;FZLnet/minecraft/world/level/Level$ExplosionInteraction;)V"
@@ -29,7 +28,6 @@ public class BedBlockMixin {
             Level level,
             BlockPos pos,
             Player player,
-            BlockHitResult hitResult,
             CallbackInfoReturnable<InteractionResult> cir
     ) {
         ExplosivityPendingTag.set(ExplosionSource.BED);
